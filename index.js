@@ -1,6 +1,9 @@
 const puppeteer = require('puppeteer');
+const { consola } = require('consola');
 
 (async () => {
+  const searchedKeyword = await consola.prompt('Enter the searched keyword: ');
+
   const browser = await puppeteer.launch({ headless: false });
   const page = await browser.newPage();
 
@@ -14,7 +17,7 @@ const puppeteer = require('puppeteer');
   page.on('response', async response => {
     try {
       const responseBody = await response.text();
-      const searchKeyword = 'sieg.alexandre'; // Replace with your search term
+      const searchKeyword = searchedKeyword; // Replace with your search term
 
       if (responseBody.includes(searchKeyword)) {
         console.log(`Found keyword in response of ${response.url()}`);
@@ -24,13 +27,5 @@ const puppeteer = require('puppeteer');
     }
   });
 
-  // Navigate to your target page
-  await page.goto('https://example.com');
-
-  // Do actions on the page if needed...
-
-  // Close browser after some time
-  // setTimeout(async () => {
-  //   await browser.close();
-  // }, 10000);
+  await page.goto('https://www.linkedin.com');
 })();
